@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-=-n56m%&+)b3%3ik#z(g+v@dfo+yq4j)^bs8kb)!#_zo2!r6!b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["dominikivacic.pythonanywhere.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -123,6 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -134,27 +135,3 @@ LOGIN_REDIRECT_URL = 'learning_logs:index'
 LOGOUT_REDIRECT_URL = 'learning_logs:index'
 LOGIN_URL = 'accounts:login'
 
-# Platform.sh settings.
-from platformshconfig import Config
-
-config = Config()
-if config.is_valid_platform():
-    ALLOWED_HOSTS.append('.platformsh.site')
-
-    if config.appDir:
-        STATIC_ROOT = Path(config.appDir) / 'static'
-    if config.projectEntropy:
-        SECRET_KEY = config.projectEntropy
-
-if not config.in_build():
-    db_settings = config.credentials('database')
-    DATABASES = {
-        'default' : {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': db_settings['path'],
-            'USER': db_settings['username'],
-            'PASSWORD': db_settings['password'],
-            'HOST':db_settings['host'],
-            'PORT': db_settings['port'],
-        },
-    }
